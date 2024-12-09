@@ -9,7 +9,7 @@ ROOT_DIR = os.getcwd()
 LIBRARY = os.path.join(os.getcwd(), "library")
 SONG_LINK = ""
 
-# main Code
+# main code
 def main():
     attempts = 0
     donwloaded = False
