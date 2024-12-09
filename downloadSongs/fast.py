@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os
-import functions
+import downloadSongs.functions as functions
 
 WEB_SITE_LINK = "https://yt.savetube.me/14-youtube-music-downloader-5djdh6"
 

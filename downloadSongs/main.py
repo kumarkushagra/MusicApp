@@ -1,7 +1,7 @@
 import os
 import time
 import fast
-import robust
+import downloadSongs.robust as robust
 
 # SETUP
 MAX_ATTEMPTS = 2
