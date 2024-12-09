@@ -7,7 +7,7 @@ import robust
 MAX_ATTEMPTS = 2
 ROOT_DIR = os.getcwd()
 LIBRARY = os.path.join(os.getcwd(), "library")
-SONG_LINK = "https://www.youtube.com/watch?v=qU9mHegkTc4"
+SONG_LINK = ""
 
 # main Code
 attempts = 0
