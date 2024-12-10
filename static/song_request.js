@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('URL:', url);  // Log the URL to check if it is being captured correctly
 
         const responseMessage = document.getElementById('responseMessage');
-        
+        responseMessage.textContent = 'Song will be added as soon as possible!';
         try {
             const response = await fetch('/song-request', {
                 method: 'POST',

@@ -24,7 +24,7 @@ def main(ROOT_DIR, LIBRARY, SONG_LINK):
         convert_button.click()
 
         # Wait for the Download button to appear after conversion
-        download_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Download']")))
+        download_button = WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Download']")))
         download_button.click()
 
         # Wait for the download to complete and move the file
