@@ -3,228 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify-like Music Player</title>
+    <title>My Music Player</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/static/styles.css">
+    <script src="static/scripts.js"></script>
 </head>
 <body>
-<div class="container">
-    <div class="sidebar">
-        <h2>My Playlists</h2>
-        <div id="playlistList">
-            <!-- Playlists will be dynamically loaded here -->
-        </div>
-        <button onclick="window.location.href='/playlists'">Manage Playlists</button>
-    </div>
-
-    <div class="player-container">
-        <h2>Music Player</h2>
-        
-        <div class="search-container">
-            <input type="text" id="songSearch" placeholder="Search for a song" onkeyup="filterSongs()">
-        </div>
-
-        <select id="songSelector" size="10" onchange="updateSongDetails()">
-            <!-- Songs will be dynamically loaded here -->
-        </select>
-
-        <div class="audio-controls">
-            <audio id="audioPlayer" controls>
-                <source id="audioSource" src="" type="audio/mp3">
-                Your browser does not support the audio element.
-            </audio>
+    <div class="container">
+        <div class="player-container">
+            <h2>Music Player</h2>
             
-            <div class="player-buttons">
-                <button id="prevButton" onclick="previousSong()">
-                    <i class="fas fa-step-backward"></i> Previous
-                </button>
-                <button id="playButton" onclick="playSelectedSong()">
-                    <i class="fas fa-play"></i> Play
-                </button>
-                <button id="nextButton" onclick="nextSong()">
-                    <i class="fas fa-step-forward"></i> Next
-                </button>
-                <button id="shuffleButton" onclick="toggleShuffle()">
-                    <i class="fas fa-random"></i> Shuffle
-                </button>
+            <div class="search-container">
+                <input type="text" id="songSearch" placeholder="Search for a song" onkeyup="filterSongs()">
+            </div>
+
+            <select id="songSelector" size="10" onchange="updateSongDetails()">
+                <!-- Songs will be dynamically loaded here -->
+            </select>
+
+            <div class="audio-controls">
+                <audio id="audioPlayer" controls>
+                    <source id="audioSource" src="" type="audio/mp3">
+                    Your browser does not support the audio element.
+                </audio>
+                
+                <div class="player-buttons">
+                    <button id="prevButton" onclick="previousSong()">
+                        <i class="fas fa-step-backward"></i> Previous
+                    </button>
+                    <button id="playButton" onclick="playSelectedSong()">
+                        <i class="fas fa-play"></i> Play
+                    </button>
+                    <button id="nextButton" onclick="nextSong()">
+                        <i class="fas fa-step-forward"></i> Next
+                    </button>
+                    <button id="shuffleButton" onclick="toggleShuffle()">
+                        <i class="fas fa-random"></i> Shuffle
+                    </button>
+                </div>
+            </div>
+
+            <div class="song-actions">
+                <button onclick="window.location.href='/request-song'">Request Song</button>
+            </div>
+
+            <div class="progress-container">
+                <div id="progressBar" class="progress-bar"></div>
             </div>
         </div>
-
-        <div class="current-playlist">
-            <h3>Current Playlist: <span id="currentPlaylistName">All Songs</span></h3>
-        </div>
-
-        <div class="song-actions">
-            <button onclick="addToPlaylist()">Add to Playlist</button>
-            <button onclick="window.location.href='/request-song'">Request Song</button>
-        </div>
-
-        <div class="progress-container">
-            <div id="progressBar" class="progress-bar"></div>
-        </div>
     </div>
-</div>
-
-<script>
-    const songSelector = document.getElementById('songSelector');
-    const audioPlayer = document.getElementById('audioPlayer');
-    const audioSource = document.getElementById('audioSource');
-    const songSearch = document.getElementById('songSearch');
-    const currentPlaylistNameEl = document.getElementById('currentPlaylistName');
-    const playlistListEl = document.getElementById('playlistList');
-    const progressBar = document.getElementById('progressBar');
-
-    let allSongs = [];
-    let currentPlaylist = [];
-    let currentSongIndex = 0;
-    let shuffleMode = false;
-    let currentPlaylistId = null;
-
-    async function loadSongs() {
-        try {
-            const response = await fetch('/songs');
-            allSongs = await response.json();
-            currentPlaylist = allSongs;  // Set initial playlist to all songs
-            loadSongOptions(allSongs);
-        } catch (error) {
-            console.error('Error loading songs:', error);
-        }
-    }
-
-    async function loadPlaylists() {
-        try {
-            const response = await fetch('/playlists');
-            const playlists = await response.json();
-            
-            playlistListEl.innerHTML = '';
-            playlists.forEach(playlist => {
-                const playlistEl = document.createElement('div');
-                playlistEl.className = 'playlist-item';
-                playlistEl.textContent = playlist.name;
-                playlistEl.onclick = () => loadPlaylist(playlist.id);
-                playlistListEl.appendChild(playlistEl);
-            });
-        } catch (error) {
-            console.error('Error loading playlists:', error);
-        }
-    }
-
-    function loadSongOptions(songs) {
-        songSelector.innerHTML = '';
-        songs.forEach((song, index) => {
-            const option = document.createElement('option');
-            option.value = index;
-            option.textContent = song;
-            songSelector.appendChild(option);
-        });
-    }
-
-    function updateSongDetails() {
-        const selectedSongIndex = songSelector.selectedIndex;
-        if (selectedSongIndex === -1) return;
-
-        currentSongIndex = selectedSongIndex;
-        playSelectedSong();
-    }
-
-    function playSelectedSong() {
-        if (currentPlaylist.length === 0) return;
-
-        const selectedSong = currentPlaylist[currentSongIndex];
-        audioSource.src = `/library/${selectedSong}`;
-        audioPlayer.load();
-        audioPlayer.play();
-
-        // Highlight the selected song in the selector
-        songSelector.selectedIndex = currentSongIndex;
-    }
-
-    function nextSong() {
-        if (currentPlaylist.length === 0) return;
-
-        if (shuffleMode) {
-            currentSongIndex = Math.floor(Math.random() * currentPlaylist.length);
-        } else {
-            currentSongIndex = (currentSongIndex + 1) % currentPlaylist.length;
-        }
-        
-        songSelector.selectedIndex = currentSongIndex;
-        playSelectedSong();
-    }
-
-    function previousSong() {
-        if (currentPlaylist.length === 0) return;
-
-        if (shuffleMode) {
-            currentSongIndex = Math.floor(Math.random() * currentPlaylist.length);
-        } else {
-            currentSongIndex = (currentSongIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
-        }
-        
-        songSelector.selectedIndex = currentSongIndex;
-        playSelectedSong();
-    }
-
-    function toggleShuffle() {
-        shuffleMode = !shuffleMode;
-        const shuffleButton = document.getElementById('shuffleButton');
-        shuffleButton.classList.toggle('active');
-        shuffleButton.querySelector('i').classList.toggle('fa-random');
-        shuffleButton.querySelector('i').classList.toggle('fa-sync');
-    }
-
-    async function loadPlaylist(playlistId) {
-        try {
-            const response = await fetch(`/playlist/${playlistId}`);
-            const playlist = await response.json();
-            
-            currentPlaylist = playlist.songs;
-            currentPlaylistId = playlistId;
-            currentPlaylistNameEl.textContent = playlist.name;
-            
-            loadSongOptions(currentPlaylist);
-            
-            if (currentPlaylist.length > 0) {
-                currentSongIndex = 0;
-                playSelectedSong();
-            }
-        } catch (error) {
-            console.error('Error loading playlist:', error);
-        }
-    }
-
-    async function addToPlaylist() {
-        if (!currentPlaylistId) {
-            alert('Please select a playlist first');
-            return;
-        }
-
-        const selectedSong = songSelector.options[songSelector.selectedIndex].text;
-        try {
-            const response = await fetch(`/playlist/${currentPlaylistId}/add-song`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ song: selectedSong })
-            });
-
-            const result = await response.json();
-            alert(result.message);
-        } catch (error) {
-            console.error('Error adding song to playlist:', error);
-        }
-    }
-
-    audioPlayer.ontimeupdate = function() {
-        const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-        progressBar.style.width = `${progress}%`;
-    };
-
-    // Auto-play next song
-    audioPlayer.onended = nextSong;
-
-    // Initialize the page
-    loadSongs();
-    loadPlaylists();
-</script>
 </body>
 </html>
