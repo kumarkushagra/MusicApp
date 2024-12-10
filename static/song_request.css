@@ -1,0 +1,122 @@
+/* General */
+:root {
+    --theme-1: #1DB954;
+    --theme-2: #1AA34A;
+    --background-dark: #191414;
+    --background-medium: #282828;
+    --background-light: #1E1E1E;
+    --text-light: #FFFFFF;
+    --text-muted: #B3B3B3;
+}
+
+body {
+    font-family: 'Circular', Arial, sans-serif;
+    background: linear-gradient(135deg, #1DB954 0%, #191414 100%);
+    color: #0772329a;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;    
+}
+input[type="text"] {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 25px;
+    border: 2px solid var(--background-medium);
+    background-color: var(--background-medium);
+    color: var(--text-light);
+    transition: all 0.3s ease;
+}
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--theme-1);
+    box-shadow: 0 0 10px rgba(29, 185, 84, 0.3);
+}
+
+/* Song Request page */
+.form-container {
+    background-color: var(--background-light);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+.form-container:hover {
+    transform: scale(1.02);
+}
+h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: var(--text-light);
+    font-weight: 900;
+}
+.input-wrapper {
+    position: relative;
+    margin-bottom: 25px;
+}
+.response-message {
+    margin-top: 20px;
+    font-size: 1rem;
+    height: 30px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.response-message.success {
+    color: var(--theme-1);
+    opacity: 1;
+}
+.response-message.error {
+    color: #FF5722;
+    opacity: 1;
+}
+.btn {
+    background-color: #1db954;
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-weight: 900; 
+    font-size: 25px;
+    font-family: 'Roboto', sans-serif; 
+}
+.btn:hover {
+    background-color: #1aa34a;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); 
+    transform: translateY(-2px); 
+}
+.btn:active {
+    transform: translateY(1px); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+}
+
+.home-button {
+    background-color:  #1e88e5;
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-weight: 900; 
+    font-size: 25px;
+    font-family: 'Roboto', sans-serif; 
+}
+.home-button:hover {
+    background-color: #1e88e5;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+.home-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

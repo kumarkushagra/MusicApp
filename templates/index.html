@@ -3,26 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Music Player</title>
+    <title>Accessible Music Player</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/static/styles.css">
-    <script src="static/scripts.js"></script>
+    <link rel="stylesheet" href="/static/home_page.css">
+    <script src="/static/media_player.js"></script>
 </head>
 <body>
     <div class="container">
-        <div class="player-container">
-            <h2>Music Player</h2>
+        <main class="player-container">
+            <h1>Music Player</h1>
             
             <div class="search-container">
-                <input type="text" id="songSearch" placeholder="Search for a song" onkeyup="filterSongs()">
+                <label for="songSearch" class="sr-only">Search Songs</label>
+                <input type="search" id="songSearch" placeholder="Search for a song" aria-label="Search songs"onkeyup="filterSongs()">
             </div>
 
-            <select id="songSelector" size="10" onchange="updateSongDetails()">
-                <!-- Songs will be dynamically loaded here -->
-            </select>
+            <div class="song-list-container">
+                <label for="songSelector">Available Songs</label>
+                <select id="songSelector" size="3" aria-label="Song selection list" onchange="updateSongDetails()">
+                    <!-- Songs will be dynamically loaded here -->
+                </select>
+            </div>
 
-            <div class="audio-controls">
-                <audio id="audioPlayer" controls>
+            <div class="audio-controls" aria-label="Audio Player Controls">
+                <audio id="audioPlayer" controls aria-label="Music playback">
                     <source id="audioSource" src="" type="audio/mp3">
                     Your browser does not support the audio element.
                 </audio>
@@ -43,14 +47,20 @@
                 </div>
             </div>
 
-            <div class="song-actions">
-                <button onclick="window.location.href='/request-song'">Request Song</button>
+            <div class="song-metadata" aria-live="polite" id="songMetadata">
+                <p id="currentSongInfo">No song selected</p>
             </div>
 
-            <div class="progress-container">
-                <div id="progressBar" class="progress-bar"></div>
+            <div class="progress-container" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                <div id="progressBar" class="progress-bar" aria-label="Song progress"></div>
             </div>
-        </div>
+            <br></br>
+            <div class="song-actions">
+                <a href="/song-request" class="btn" aria-label="Request a New Song"> 
+                    Request Song
+                </a>
+            </div>
+        </main>
     </div>
 </body>
 </html>
