@@ -26,10 +26,14 @@ def move_file_to_library(source, target):
 def setup_driver(download_dir):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument(f'--download-default-directory={download_dir}')
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-application-cache')
+    chrome_options.add_argument('--disable-gpu')  
+    chrome_options.add_argument('--no-sandbox')  
+    chrome_options.add_argument('--disable-application-cache')  
+    chrome_options.add_argument('--disk-cache-size=1')  
+    chrome_options.add_argument('--disable-logging')  
+    chrome_options.add_argument('--disable-extensions') 
+    chrome_options.add_argument('--disable-software-rasterizer')  
+    chrome_options.add_argument('--headless')  
 
     prefs = {
         "download.default_directory": download_dir,
