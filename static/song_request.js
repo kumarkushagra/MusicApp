@@ -1,11 +1,16 @@
+console.log('JavaScript file loaded');
+
 document.getElementById('songRequestForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    console.log('Form submitted');  // Log to confirm the form is submitted
 
     const url = document.getElementById('songUrl').value;
-    const responseMessage = document.getElementById('responseMessage');
+    console.log('URL:', url);  // Log the URL to check if it is being captured correctly
 
+    const responseMessage = document.getElementById('responseMessage');
+    
     try {
-        const response = await fetch('/request-song', {
+        const response = await fetch('/song-request', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -21,6 +26,7 @@ document.getElementById('songRequestForm').addEventListener('submit', async (e) 
             throw new Error('Failed to request song');
         }
     } catch (error) {
+        console.error('Error:', error);  // Log the error to the console
         responseMessage.textContent = 'Error: ' + error.message;
         responseMessage.classList.add('error');
         responseMessage.classList.remove('success');

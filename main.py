@@ -46,6 +46,7 @@ async def request_song_page(request: Request):
 
 @app.post("/song-request")
 async def request_song(request: SongRequest):
+    print("Received URL:", request.url)  # Log the incoming URL to verify it's reaching here.
     success = download.main(request.url)
     if success:
         return {"message": "Song downloaded successfully!"}
