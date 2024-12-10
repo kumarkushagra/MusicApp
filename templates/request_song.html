@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request a Song</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Request a Song</h2>
+        <form id="songRequestForm">
+            <div class="input-wrapper">
+                <input type="text" id="songUrl" placeholder="Enter song URL" required>
+            </div>
+            <button type="submit" class="btn">Request Song</button>
+        </form>
+
+        <div id="responseMessage" class="response-message"></div>
+
+        <button class="btn home-button" onclick="window.location.href='/'">Go to Home</button>
+    </div>
+
+    <script>
+        document.getElementById('songRequestForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const url = document.getElementById('songUrl').value;
+            const responseMessage = document.getElementById('responseMessage');
+
+            try {
+                const response = await fetch('/request-song', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url }),
+                });
+
+                if (response.ok) {
+                    responseMessage.textContent = 'Song requested successfully!';
+                    responseMessage.classList.add('success');
+                    responseMessage.classList.remove('error');
+                } else {
+                    throw new Error('Failed to request song');
+                }
+            } catch (error) {
+                responseMessage.textContent = 'Error: ' + error.message;
+                responseMessage.classList.add('error');
+                responseMessage.classList.remove('success');
+            }
+        });
+    </script>
+</body>
+</html>
