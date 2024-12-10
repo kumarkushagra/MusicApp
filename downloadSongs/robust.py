@@ -6,7 +6,6 @@ from selenium.webdriver.support import expected_conditions as EC
 import os
 import downloadSongs.functions as functions
 
-MAX_FILE_SIZE_MB = 10  
 WEB_SITE_LINK = "https://ytmp3.la/en-yMP0/"
 
 def main(ROOT_DIR, LIBRARY, SONG_LINK):
@@ -30,18 +29,7 @@ def main(ROOT_DIR, LIBRARY, SONG_LINK):
 
         # Wait for the download to complete and move the file
         functions.wait_for_download(ROOT_DIR)
-        downloaded_file = functions.get_most_recent_file(ROOT_DIR)
-            
-        file_size = os.path.getsize(downloaded_file) / (1024 * 1024)  # Convert bytes to MB
-        print(f"Downloaded file size: {file_size:.2f} MB")
-
-        # If the file is larger than 10 MB, delete it and abort the operation
-        if file_size > MAX_FILE_SIZE_MB:
-            print("File size exceeds 10 MB. Aborting download.")
-            os.remove(downloaded_file)  # Remove the large file
-        else:
-            # Move the file to the library if it's under the size limit
-            functions.move_file_to_library(ROOT_DIR, LIBRARY)
+        functions.move_file_to_library(ROOT_DIR, LIBRARY)
 
     except Exception as e:
         print(e)
